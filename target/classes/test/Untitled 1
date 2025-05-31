@@ -1,0 +1,161 @@
+Component test
+	 - login screen 
+	 - shopping screen - prouct display
+	 - shopping screen - profile section
+	 - shopping screen - cart section
+	 - cart - checkout screen
+	 - cart - information screen
+	 - cart - overview screen
+	 - cart - completion screen 
+	 
+Integrated testing 
+     - ETE flow selecting single product
+     			- success
+     			- failure 
+     - ETE flow selecting multi product
+                - success
+                - failure 
+     - ETE flow removing the added item from the cart 
+     - 
+     - login and logout on same account- after adding item to the cart 
+     - login and logout and login with differnet account - check the cart 
+     
+ ---------------------------------------------------------------------------------
+ 
+ 
+ 🧩 Component Testing – Gherkin Scenarios
+
+
+Feature: Login functionality
+
+  Scenario: Successful login with valid credentials
+    Given I am on the login page
+    When I enter valid username and password
+    And I click the login button
+    Then I should be redirected to the shopping screen
+
+  Scenario: Failed login with invalid credentials
+    Given I am on the login page
+    When I enter invalid username or password
+    And I click the login button
+    Then I should see an error message
+
+  Scenario: Locked out user login
+    Given I am on the login page
+    When I login with "locked_out_user" credentials
+    Then I should see a locked out error message
+
+✅ Shopping Screen – Product Display
+
+
+Feature: Product listing on shopping screen
+
+  Scenario: Display of all products
+    Given I am logged in
+    When I view the shopping screen
+    Then I should see a list of products with name, price, and image
+
+  Scenario: Sorting products
+    Given I am on the shopping screen
+    When I select a sort option
+    Then the products should be sorted accordingly
+
+✅ Shopping Screen – Profile Section
+
+Feature: Profile options in sidebar
+
+  Scenario: Access sidebar and logout
+    Given I am on the shopping screen
+    When I click on the menu icon
+    Then I should see the sidebar with profile options
+    And I should be able to log out
+
+✅ Shopping Screen – Cart Section
+
+
+Feature: Cart interaction
+
+  Scenario: Add and view cart items
+    Given I add a product to the cart
+    When I click on the cart icon
+    Then I should see the added item listed in the cart
+
+✅ Cart – Checkout to Completion
+
+
+Feature: Checkout flow
+
+  Scenario: Proceed to checkout
+    Given I have items in the cart
+    When I click the checkout button
+    Then I should be redirected to the information page
+
+  Scenario: Submit checkout information
+    Given I am on the information screen
+    When I fill in First Name, Last Name, and Postal Code
+    And I click the continue button
+    Then I should be redirected to the overview screen
+
+  Scenario: Complete the order
+    Given I am on the overview screen
+    When I click the finish button
+    Then I should see an order confirmation message
+
+🔄 Integrated Testing – Gherkin Scenarios
+
+Feature: End-to-end checkout with one product
+
+  Scenario: Successful checkout with one product
+    Given I am logged in
+    When I add a single product to the cart
+    And I complete the checkout process
+    Then I should see the order confirmation
+
+  Scenario: Failed checkout due to missing information
+    Given I am on the checkout information screen
+    When I leave required fields blank
+    And I click continue
+    Then I should see validation error messages
+
+✅ E2E – Multiple Product Purchase
+
+
+Feature: End-to-end checkout with multiple products
+
+  Scenario: Successful checkout with multiple products
+    Given I am logged in
+    When I add multiple products to the cart
+    And I complete the checkout process
+    Then I should see the order confirmation
+
+  Scenario: Checkout failure due to item removal
+    Given I am on the overview screen
+    When an item is removed or unavailable
+    Then I should see an error or updated cart status
+
+✅ E2E – Cart Item Removal
+
+
+Feature: Remove item from cart
+
+  Scenario: Remove a product and proceed
+    Given I add products to the cart
+    When I remove one product
+    Then the cart should reflect updated item count and price
+✅ E2E – Login & Logout Same Account
+
+Feature: Logout and login with same account
+
+  Scenario: Cart is reset on relogin
+    Given I add an item to the cart
+    And I log out and log back in with the same account
+    Then the cart should be empty
+
+✅ E2E – Login With Different Account
+
+Feature: Cart isolation across accounts
+
+  Scenario: Cart does not persist across accounts
+    Given User A adds items to the cart and logs out
+    When User B logs in
+    Then the cart should be empty
